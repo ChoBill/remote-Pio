@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask
-from flask import jsonify
+from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -33,6 +32,11 @@ def parse_response(resp):
         w1, pin_num, w3, pin_value = line.split(' ') 
         pin_status.update ({pin_num: pin_value})
     return pin_status
+
+# Desing an UI to control gpio pins
+@app.route("/")
+def remote_gpo():
+    return render_template('remote_gpo.html')
 
 # Provide webapi to access the gpio pins
 # Example:

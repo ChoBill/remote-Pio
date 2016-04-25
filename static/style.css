@@ -1,0 +1,49 @@
+h1 {
+	text-align: center;
+	color: #206020;
+}
+
+.button-area {
+	width:	100%;
+	height: 60%;
+	margin: auto;
+	margin-top: 10%;
+}
+
+.button-area > div {
+	width:	50%;
+	height: 10%;
+	margin: auto;
+	margin-bottom: 10px;
+	background-color: #ccc;
+}
+
+.button-area > div > h2 {
+	display: inline-block; 
+	width: 40%;
+	line-height: 110px;
+	vertical-align: bottom;
+	text-align: right;
+	margin-top: 10px;
+}
+
+.button-area > div > div{
+	display: inline-block; 
+	width: 40%;
+	height: 150px;
+	background-image: url("PowerButton.png");
+	background-repeat: no-repeat;
+	background-position: left;
+	margin: auto;
+	margin-top: 10px;
+}
+
+.on > div {
+	-webkit-filter: hue-rotate(0deg) brightness(80%);
+	filter: hue-rotate(0deg) brightness(80%);
+}
+
+.off > div {
+	-webkit-filter: hue-rotate(250deg) brightness(80%);
+	filter: hue-rotate(250deg) brightness(80%);
+}
