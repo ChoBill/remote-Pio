@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	api_root = "http://" + window.location.host + "/gpio/";
 	init_button_area();
 });
 
@@ -6,7 +7,7 @@ $(document).ready(function() {
 // Bind the click event to thees buttons.
 function init_button_area() {
 	$.ajax({ 
-		url: "http://" + window.location.host + "/gpio/read/" 
+		url: api_root
 	}).then(function(data) {
 		pins = data.data;
 		$(".button-area").removeData();
@@ -38,12 +39,16 @@ function set_gpio(event){
 	// Check if the class is on
 	if ( $( ID ).hasClass ("on") ){
 		// if current status is on, then turn off
-		$.ajax({ url: "http://" + window.location.host + "/gpio/off/" + pin_num + "/" });
+		post_data = {cmd: "off"}
 	}
 	else {
 		// else: (current status is off), then turn on
-		$.ajax({ url: "http://" + window.location.host + "/gpio/on/" + pin_num + "/" });
+		post_data = {cmd: "on"}
 	}
+	$.ajax({
+		type: "POST",
+		url: api_root + pin_num + "/",
+		data: post_data});
 	$( ID ).toggleClass( "on" );
 	$( ID ).toggleClass( "off" );
 }

@@ -10,16 +10,16 @@ Run the test server:
 python gpioapi.py
 ```
 
-Browse the website(Default port of the test server is 5000):
+Browse the web UI(Default port of the test server is 5000):
 ```
 (http://raspberrypi:5000/)
 ```
 
-Use the web API:
+Access the web API:
 ```
-(http://raspberrypi:5000/gpio/read/)
-(http://raspberrypi:5000/gpio/on/22/)
-(http://raspberrypi:5000/gpio/off/23/)
+GET  /gpio/      - Retrun data {pin nums: pin value}
+GET  /gpio/{pin} - Return data {pin num: pin value}
+POST /gpio/{pin} - Post data {cmd: on|off}
 ```
 
 # Change GPIO Settings:

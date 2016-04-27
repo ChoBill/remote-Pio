@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
@@ -9,23 +9,25 @@ GPIO_Mode="BCM"
 # Set GPIO Pin number
 GPIO_Pins="22,23,24,25"
 
+# Prepare gpio.py command and parameters
 def prep_cmd(cmd, pin):
     # Set command parameters
     import os
     dir_name = os.path.dirname(os.path.realpath(__file__))
     Script = dir_name + "/gpio.py"
     SetMode=GPIO_Mode
-    # Prepare gpio.py command & parameters
     CMD = ["sudo", Script, "mode", SetMode, cmd]
     CMD.extend (pin.split(","))
     return CMD
 
+# Run gpio.py command
 def run_cmd(CMD):
     import sys, subprocess
     out = subprocess.check_output(CMD)
     lines = out.decode(sys.stdout.encoding).splitlines()
     return lines
 
+# Parse the gpio.py stdout to {pin_number: pin_value}
 def parse_response(resp):
     pin_status = {}
     for line in resp:
@@ -33,16 +35,20 @@ def parse_response(resp):
         pin_status.update ({pin_num: pin_value})
     return pin_status
 
-# Desing an UI to control gpio pins
+# Desing an UI to control gpio pins by the API
 @app.route("/")
 def remote_gpo():
     return render_template('remote_gpo.html')
 
-# Provide webapi to access the gpio pins
-# Example:
-#   http://127.0.0.1/gpio/on/22,23/
-@app.route("/gpio/<cmd>/<pin>/")
-def gpio(cmd, pin):
+# Provide API to access the gpio pins by gpio.py command tool
+# GET  /gpio/{pin} - Retrun data {pin_num: pin_value}
+# POST /gpio/{pin} - Post {cmd: [on|off]}
+@app.route("/gpio/<pin>/", methods=['GET', 'POST'])
+def gpio(pin):
+    if request.method == 'GET':
+        cmd = "read"
+    elif request.method == 'POST':
+        cmd = request.form['cmd']
     # Prepare the command & arguments
     CMD = prep_cmd(cmd, pin)
     # Run the gpio.py command
@@ -61,7 +67,8 @@ def gpio(cmd, pin):
         response.update ({"data": parse_response(resp_lines) })
     return jsonify(**response)
 
-@app.route("/gpio/read/")
+# GET /gpio/ - Retrun data {pin_num: pin_value}
+@app.route("/gpio/", methods=['GET'])
 def gpio_read():
     # Prepare the command & arguments
     CMD = prep_cmd("read", GPIO_Pins)
