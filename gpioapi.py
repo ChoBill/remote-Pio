@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*
 
 from flask import Flask, render_template, jsonify, request
 
@@ -24,7 +25,7 @@ def prep_cmd(cmd, pin):
 def run_cmd(CMD):
     import sys, subprocess
     out = subprocess.check_output(CMD)
-    lines = out.decode(sys.stdout.encoding).splitlines()
+    lines = out.decode('utf-8').splitlines()
     return lines
 
 # Parse the gpio.py stdout to {pin_number: pin_value}
