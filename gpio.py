@@ -1,41 +1,61 @@
 #!/usr/bin/env python
 
-# Usage:
-# sudo python gpio.py mode [BOARD|BCM] [on|off|read] [PIN_NUMBERs]
-# Example:
-# sudo python gpio.py mode BCM on   22 23 24 25 
-# sudo python gpio.py mode BCM off  22 23 24 25 
-# sudo python gpio.py read BCM 22 23 24 25
+'''
+A command line tool to access the Raspberry Pi GPIO pins.
+Usage:
+> sudo python gpio.py mode [BOARD|BCM] [on|off|read] [PIN_NUMBERs]
+Example:
+$ sudo python gpio.py mode BCM on   22 23 24 25 
+$ sudo python gpio.py mode BCM off  22 23 24 25 
+$ sudo python gpio.py read BCM 22 23 24 25
+'''
 
 import RPi.GPIO as GPIO
 
-# Initial GPIO settings
 def initial_GPIO_mode(mode):
+    '''
+    Initial GPIO settings
+    Args:
+        mode: [BOARD|BCM] GPIO mode of Raspberry Pi
+    '''
     GPIO.setmode (mode)
     GPIO.setwarnings(False)
 
-# Set GPIO_PINs to output pins
 def setup_GPIO_as_output_pin(GPIO_PINs):
+    '''
+    Set GPIO_PINs as output pins
+    Args:
+        GPIO_Pins: List of the GPIO pins
+    '''
     for pin in GPIO_PINs:
         GPIO.setup (int(pin), GPIO.OUT)
 
-# Set value to GPIO_PINs 
 def set_pins(GPIO_PINs, value):
+    '''
+    Set value to GPIO_PINs 
+    Args:
+        GPIO_Pins: List of the GPIO pins
+        value: [GPIO.HIGH|GPIO.LOW]
+    '''
     for pin in GPIO_PINs:
         GPIO.output (int(pin), value) 
 
-# Read value from GPIO_PINs and print 
 def read_pins(GPIO_PINs):
+    '''
+    Read value from GPIO_PINs and print 
+    Args:
+        GPIO_Pins: List of the GPIO pins
+    '''
     for pin in GPIO_PINs:
         value = GPIO.input (int(pin)) 
         print ("Pin %s is %d" % (pin, value))
 
 # If the input parameter not correct. Print the usage and exit
 def usage():
-    print "Usage:"
-    print "> sudo python gpio.py mode [BOARD|BCM] [on|off|read] [PIN_NUMBERs]"
-    print "Example:"
-    print "> sudo python gpio.py mode BCM on 22 23 24 25"
+    '''
+    If the input parameter not correct. Print the usage and exit.
+    '''
+    print (__doc__)
     exit()
 
 if __name__ == "__main__":
