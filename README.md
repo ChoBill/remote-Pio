@@ -19,7 +19,7 @@ Browse the web UI(Default port of the test server is 5000):
 
 Access the web API:
 ```
-GET  /gpio/      - Retrun data {pin nums: pin value}
+GET  /gpio/      - Return data {pin nums: pin value}
 GET  /gpio/{pin} - Return data {pin num: pin value}
 POST /gpio/{pin} - Post data {cmd: on|off}
 ```
